@@ -1,4 +1,4 @@
-// import React, { useState } from 'react';
+import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 
 export const products = [
@@ -9,7 +9,7 @@ export const products = [
     rating: 5
   },
   {
-    imgSrc: "https://media.istockphoto.com/id/1424983265/photo/making-vegetable-sauce-mechanical-grinding-of-paprika-sweet-bell-peppers-and-hot-pepper.jpg?s=612x612&w=0&k=20&c=cuePSr-bJ4QbDdyS7rwvurELWpWL5PWGzVYmee9lxeE=",
+    imgSrc: "https://media.istockphoto.com/id/1424983124/photo/making-vegetable-sauce-mechanical-grinding-of-paprika-sweet-bell-peppers-and-hot-pepper.jpg?s=612x612&w=0&k=20&c=HaVVRKBRBMHreCC9ic4Mbf9cgcEvF7wuAOQZ9gxPHMQ=",
     title: "Red Chili Pepper Grinder",
     price: 65,
     rating: 4

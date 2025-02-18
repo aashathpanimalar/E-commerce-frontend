@@ -8,16 +8,14 @@ import Footer from './component/Footer';
 import Cart, { TotalCostContext } from './component/Cart';
 import Address from './component/Address';
 import Payment from './component/Payment';
-import axios from 'axios';
 
 function App() {
-  const [cartItems, setCartItems] = useState({});
-  const [address, setAddress] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cart')) || {});
 
   const handleAddToCart = (product) => {
     setCartItems((prevItems) => {
       const newCart = { ...prevItems, [product.title]: (prevItems[product.title] || 0) + 1 };
+      localStorage.setItem('cart', JSON.stringify(newCart));
       return newCart;
     });
   };
@@ -30,48 +28,35 @@ function App() {
       } else {
         delete newCart[product.title];
       }
+      localStorage.setItem('cart', JSON.stringify(newCart));
       return newCart;
     });
   };
 
-  const handleProceedToPayment = async () => {
-    if (!address || !paymentMethod) {
-      alert('Please complete the address and payment method.');
-      return;
-    }
-    
-    const cartItemsArray = Object.entries(cartItems).map(([title, quantity]) => ({
+  // Calculate total cost here
+  const cartItemsArray = Object.entries(cartItems).map(([title, quantity]) => {
+    const product = products.find(product => product.title === title);
+    return {
       title,
       quantity,
-      price: products.find(p => p.title === title)?.price || 0
-    }));
+      imgSrc: product?.imgSrc || 'default_image.jpg',
+      price: product?.price || 0,
+      rating: product?.rating || 0
+    };
+  });
 
-    try {
-      await axios.post('/api/saveOrder', {
-        cartItems: cartItemsArray,
-        address,
-        paymentMethod
-      });
-      alert('Order saved successfully!');
-    } catch (error) {
-      console.error('Error saving order:', error);
-    }
-  };
-
-  const totalCost = Object.values(cartItems).reduce((acc, quantity) => {
-    const product = products.find(p => p.title === Object.keys(cartItems).find(key => cartItems[key] === quantity));
-    return acc + (product?.price || 0) * quantity;
-  }, 0);
+  const totalCost = cartItemsArray.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
     <TotalCostContext.Provider value={totalCost}>
+
       <Router>
         <div>
           <div id="root"></div>
           <fieldset id="main">
             <fieldset id="main2">
               <Routes>
-          
+                {/* <Route path='/login' element={<Login />} /> */}
                 <Route
                   path="/"
                   element={
@@ -93,11 +78,11 @@ function App() {
                 />
                 <Route
                   path="/address"
-                  element={<Address onAddressSelect={setAddress} />}
+                  element={<Address />}
                 />
                 <Route
                   path="/payment"
-                  element={<Payment onPaymentMethodSelect={setPaymentMethod} onProceedToPayment={handleProceedToPayment} />}
+                  element={<Payment />}
                 />
               </Routes>
             </fieldset>
@@ -107,4 +92,5 @@ function App() {
     </TotalCostContext.Provider>
   );
 }
+
 export default App;

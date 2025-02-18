@@ -1,4 +1,3 @@
-
 import React, { createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,18 +12,7 @@ function Cart({ cartItems, products, onRemoveFromCart }) {
     onRemoveFromCart(product);
   };
 
-  const handlePlaceOrder = () => {
-    const cartItemsArray = Object.entries(cartItems).map(([title, quantity]) => {
-      const product = products.find(product => product.title === title);
-      return {
-        title,
-        quantity,
-        price: product?.price || 0,
-      };
-    });
-
-    // Store the cartItemsArray in localStorage
-    localStorage.setItem('cartItemsArray', JSON.stringify(cartItemsArray));
+  const handleBuy = () => {
     navigate('/address');
   };
 
@@ -72,7 +60,7 @@ function Cart({ cartItems, products, onRemoveFromCart }) {
           {cartItemsArray.length > 0 && (
             <div style={{ textAlign: 'center', padding: '30px', fontSize: '1.2rem' }}>
               <mark><strong>Total Cost: ${totalCost}.00</strong></mark><br />
-              <button id='buy' onClick={handlePlaceOrder}>Place Order</button>
+              <button id='buy' onClick={handleBuy}>Place Order</button>
             </div>
           )}
         </fieldset>
