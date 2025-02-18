@@ -61,13 +61,18 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-align: center;
-  padding: 10px;
   margin-left: 25%;
 }
 
-#PaymentButton:hover {
-  background-color: #0056b3;
+#PaymentButton:disabled {
+  background-color: #cccccc; 
+  cursor: not-allowed; 
 }
+
+
+/* #PaymentButton:hover {
+  background-color: #0056b3;
+} */
 
 button:disabled {
   background-color: #cccccc;
